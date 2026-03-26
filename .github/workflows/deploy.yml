@@ -1,0 +1,38 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build Web
+        # IMPORTANT: If your repository name is exactly "bijouterie_elhajjam", leave it.
+        # If your GitHub username is "ouss", this puts the app at ouss.github.io/bijouterie_elhajjam/
+        run: flutter build web --release --base-href "/bijouterie_elhajjam/"
+
+      # GitHub Pages natively uses a trick for Single Page Applications: 
+      # We duplicate index.html to 404.html so direct URL routing works properly.
+      - name: Setup SPA Routing for GitHub Pages
+        run: cp build/web/index.html build/web/404.html
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build/web
+          branch: gh-pages

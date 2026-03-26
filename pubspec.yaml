@@ -1,0 +1,66 @@
+name: bijouterie_elhajjam
+description: Bijouterie El-Hajjam — Gestion des dettes et factures
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Firebase — v6/v4 BoM for Flutter 3.29 / Dart 3.11
+  firebase_core: ^4.6.0
+  firebase_auth: ^6.3.0
+  cloud_firestore: ^6.2.0
+
+  # State management
+  provider: ^6.1.2
+
+  # Local storage
+  shared_preferences: ^2.5.3
+
+  # PDF generation & printing
+  pdf: ^3.11.3
+  printing: ^5.14.2
+
+  # Typeahead / autocomplete
+  flutter_typeahead: ^4.8.0
+
+  # Internationalization
+  intl: ^0.20.2
+
+  # CSV
+  csv: ^6.0.0
+
+  # ZIP (archive)
+  archive: ^3.6.1
+
+  # File picker
+  file_picker: ^8.1.7
+  path_provider: ^2.1.5
+
+  # Icons & fonts
+  google_fonts: ^6.2.1
+  cupertino_icons: ^1.0.8
+
+  # Unique IDs
+  uuid: ^4.5.1
+  http: ^1.6.0
+  excel: ^4.0.6
+  file_saver: ^0.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/images/billHeader.jpeg
+    - assets/images/logo.png

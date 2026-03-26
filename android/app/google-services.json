@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1085914176415",
+    "project_id": "bijouterie-el-hajjam",
+    "storage_bucket": "bijouterie-el-hajjam.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085914176415:android:c5fea23fef316b2b52bbaa",
+        "android_client_info": {
+          "package_name": "com.bijouterie.bijouterie_elhajjam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoyw7mI_J_FFsLS6tUOGjagQDG_pXfG8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
