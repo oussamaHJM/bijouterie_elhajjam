@@ -129,7 +129,6 @@ class _ReportsTabState extends State<ReportsTab> {
         final totalRemainingPending = totalPendingAmount - totalPaidOnPending;
 
         final isMobile = MediaQuery.of(context).size.width < 600;
-        final cardWidth = isMobile ? MediaQuery.of(context).size.width - 48 : 300.0;
 
         return Scaffold(
           body: SingleChildScrollView(
@@ -137,18 +136,7 @@ class _ReportsTabState extends State<ReportsTab> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Tableau de Bord — الرئيسية', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.darkGreen)),
-                    ElevatedButton.icon(
-                      onPressed: () => _exportExcel(context, billsP, loansP),
-                      icon: const Icon(Icons.download),
-                      label: const Text('Export Excel (Avec Onglets)', style: TextStyle(fontWeight: FontWeight.w700)),
-                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.darkGreen, foregroundColor: AppTheme.gold),
-                    ),
-                  ],
-                ),
+                const Text('Tableau de Bord — الرئيسية', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.darkGreen)),
                 const SizedBox(height: 24),
                 
                 // Filtre
@@ -179,35 +167,54 @@ class _ReportsTabState extends State<ReportsTab> {
                   spacing: 16,
                   runSpacing: 16,
                   children: [
-                    SizedBox(width: cardWidth, child: _buildMetricCard(
+                    SizedBox(width: isMobile ? (MediaQuery.of(context).size.width - 64) / 2 : 300, child: _buildMetricCard(
                       'Ventes Comptant', totalVentesComptant, Icons.receipt, AppTheme.darkGreen,
                       onTap: () => _showBillsListDialog(context, filteredBills, 'Ventes Comptant'),
                     )),
-                    SizedBox(width: cardWidth, child: _buildMetricCard(
+                    SizedBox(width: isMobile ? (MediaQuery.of(context).size.width - 64) / 2 : 300, child: _buildMetricCard(
                       'Prêts Soldés', totalPretsSoldes, Icons.check_circle, Colors.teal,
                       onTap: () => _showDebtsListDialog(context, filteredSoldOutLoans, loansP, 'Prêts Soldés (Récupérés)'),
                     )),
-                    SizedBox(width: cardWidth, child: _buildMetricCard('TOTAL VENDU', grandTotalVendu, Icons.monetization_on, AppTheme.gold, isHuge: true)),
+                    SizedBox(width: isMobile ? MediaQuery.of(context).size.width - 48 : 300, child: _buildMetricCard('TOTAL VENDU', grandTotalVendu, Icons.monetization_on, AppTheme.gold, isHuge: true)),
                   ],
                 ),
                 const SizedBox(height: 48),
 
-                const Text('Surveillance des Prêts (Global / Tout le temps)', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.darkGreen)),
+                const Text('Surveillance des Prêts', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppTheme.darkGreen)),
                 const SizedBox(height: 12),
                 Wrap(
                   spacing: 16,
                   runSpacing: 16,
                   children: [
-                    SizedBox(width: cardWidth, child: _buildMetricCard(
+                    SizedBox(width: isMobile ? (MediaQuery.of(context).size.width - 64) / 2 : 300, child: _buildMetricCard(
                       'Total Prêts en cours', totalPendingAmount, Icons.credit_card, Colors.orange.shade700,
                       onTap: () => _showDebtsListDialog(context, pendingLoans, loansP, 'Prêts en Cours'),
                     )),
-                    SizedBox(width: cardWidth, child: _buildMetricCard(
-                      'Total Restant à Payer', totalRemainingPending, Icons.warning_amber_rounded, AppTheme.error,
+                    SizedBox(width: isMobile ? (MediaQuery.of(context).size.width - 64) / 2 : 300, child: _buildMetricCard(
+                      'Restant à Payer', totalRemainingPending, Icons.warning_amber_rounded, AppTheme.error,
                       onTap: () => _showDebtsListDialog(context, pendingLoans, loansP, 'Prêts en Cours'),
                     )),
                   ],
                 ),
+                const SizedBox(height: 64),
+                // Export Button at the bottom
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () => _exportExcel(context, billsP, loansP),
+                    icon: const Icon(Icons.download),
+                    label: const Padding(
+                       padding: EdgeInsets.symmetric(vertical: 16),
+                       child: Text('Exporter le rapport Excel complet', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.darkGreen, 
+                      foregroundColor: AppTheme.gold,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 100), // Ensures content perfectly clears the FAB on mobile
               ],
             ),
           ),
@@ -243,9 +250,12 @@ class _ReportsTabState extends State<ReportsTab> {
         children: [
           Icon(icon, color: isHuge ? AppTheme.gold : color, size: isHuge ? 40 : 28),
           const SizedBox(height: 12),
-          Text(title, textAlign: TextAlign.center, style: TextStyle(color: isHuge ? Colors.white70 : Colors.black54, fontSize: 13, fontWeight: FontWeight.w600)),
+          Text(title, textAlign: TextAlign.center, maxLines: 2, style: TextStyle(color: isHuge ? Colors.white70 : Colors.black54, fontSize: 13, fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
-          Text('${value.toStringAsFixed(2)} MAD', style: TextStyle(color: isHuge ? AppTheme.gold : color, fontSize: isHuge ? 26 : 22, fontWeight: FontWeight.bold)),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text('${value.toStringAsFixed(2)} MAD', style: TextStyle(color: isHuge ? AppTheme.gold : color, fontSize: isHuge ? 26 : 22, fontWeight: FontWeight.bold)),
+          ),
         ],
       ),
     );

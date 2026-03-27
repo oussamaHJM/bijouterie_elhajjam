@@ -432,12 +432,12 @@ class _LoansListScreenState extends State<LoansListScreen> {
   }
 
   Widget _debtSummaryRow(double total, double paid, double remaining) {
-    return Row(
+    return Wrap(
+      spacing: 12,
+      runSpacing: 4,
       children: [
         _miniStat('Prêt', '${total.toStringAsFixed(0)} MAD', AppTheme.textMedium),
-        const SizedBox(width: 12),
         _miniStat('Payé', '${paid.toStringAsFixed(0)} MAD', AppTheme.success),
-        const SizedBox(width: 12),
         _miniStat(
           'Reste',
           '${remaining > 0 ? remaining.toStringAsFixed(0) : 0} MAD',

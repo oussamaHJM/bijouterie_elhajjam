@@ -443,6 +443,7 @@ class _BillItemRowState extends State<_BillItemRow> {
   late TextEditingController _karatCtrl;
   late TextEditingController _weightCtrl;
   late TextEditingController _priceCtrl;
+  late TextEditingController _totalCtrl;
 
   @override
   void initState() {
@@ -455,6 +456,10 @@ class _BillItemRowState extends State<_BillItemRow> {
         text: widget.item.weight > 0 ? '${widget.item.weight}' : '');
     _priceCtrl = TextEditingController(
         text: widget.item.pricePerGram > 0 ? '${widget.item.pricePerGram}' : '');
+        
+    final total = widget.item.weight * widget.item.pricePerGram;
+    _totalCtrl = TextEditingController(
+        text: total > 0 ? total.toStringAsFixed(2) : '');
   }
 
   @override
@@ -464,6 +469,7 @@ class _BillItemRowState extends State<_BillItemRow> {
     _karatCtrl.dispose();
     _weightCtrl.dispose();
     _priceCtrl.dispose();
+    _totalCtrl.dispose();
     super.dispose();
   }
 
@@ -477,12 +483,15 @@ class _BillItemRowState extends State<_BillItemRow> {
     ));
   }
 
+  void _updateTotalFromFields() {
+    final w = double.tryParse(_weightCtrl.text) ?? 0.0;
+    final p = double.tryParse(_priceCtrl.text) ?? 0.0;
+    _totalCtrl.text = (w * p).toStringAsFixed(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isMobile = MediaQuery.of(context).size.width < 600;
-
-    final total = (double.tryParse(_weightCtrl.text) ?? 0.0) *
-        (double.tryParse(_priceCtrl.text) ?? 0.0);
 
     InputDecoration dec(String hint, String label) => isMobile
         ? InputDecoration(isDense: true, labelText: label, labelStyle: const TextStyle(fontSize: 11), contentPadding: const EdgeInsets.all(8))
@@ -535,6 +544,7 @@ class _BillItemRowState extends State<_BillItemRow> {
             }
           }
         }
+        _updateTotalFromFields();
         _notify();
       },
       hideOnEmpty: true,
@@ -559,6 +569,7 @@ class _BillItemRowState extends State<_BillItemRow> {
       decoration: dec('0.00', 'Poids/Mizan (g)'),
       style: const TextStyle(fontSize: 13),
       onChanged: (_) {
+        _updateTotalFromFields();
         _notify();
         setState(() {});
       },
@@ -571,15 +582,29 @@ class _BillItemRowState extends State<_BillItemRow> {
       decoration: dec('0.00', 'Prix/g (MAD)'),
       style: const TextStyle(fontSize: 13),
       onChanged: (_) {
+        _updateTotalFromFields();
         _notify();
         setState(() {});
       },
     );
 
-    Widget totalText = Text(
-      total.toStringAsFixed(2),
+    Widget totalText = TextField(
+      controller: _totalCtrl,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
       textAlign: isMobile ? TextAlign.right : TextAlign.center,
+      decoration: isMobile ? InputDecoration(isDense: true, border: InputBorder.none, hintText: '0.00') : InputDecoration(isDense: true, border: InputBorder.none, hintText: '0.00'),
       style: const TextStyle(fontWeight: FontWeight.w800, color: AppTheme.darkGreen, fontSize: 14),
+      onChanged: (_) {
+        final t = double.tryParse(_totalCtrl.text) ?? 0.0;
+        final w = double.tryParse(_weightCtrl.text) ?? 0.0;
+        if (w > 0) {
+          _priceCtrl.text = (t / w).toStringAsFixed(2);
+        } else {
+          _priceCtrl.text = t.toStringAsFixed(2);
+        }
+        _notify();
+        setState(() {});
+      },
     );
 
     Widget deleteBtn = widget.onDelete != null
