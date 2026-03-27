@@ -84,82 +84,88 @@ class _CreateBillScreenState extends State<CreateBillScreen> {
   }
 
   Widget _buildHeader(BillsProvider billsP, LoansProvider loansP) {
+    bool isMobile = MediaQuery.of(context).size.width < 600;
+
+    Widget clientField = ClientTypeahead(
+      controller: _clientCtrl,
+      clients: loansP.allClients,
+      labelText: 'Nom du client / اسم الزبون',
+      onClientSelected: (c) {
+        _clientCtrl.text = c.fullName;
+        _phoneCtrl.text = c.phone;
+        billsP.setDraftClientName(c.fullName);
+      },
+    );
+
+    Widget phoneField = TextField(
+      controller: _phoneCtrl,
+      keyboardType: TextInputType.phone,
+      decoration: const InputDecoration(
+        labelText: 'Téléphone',
+        prefixIcon: Icon(Icons.phone, color: AppTheme.gold),
+      ),
+    );
+
+    Widget dateField = InkWell(
+      onTap: () async {
+        final picked = await showDatePicker(
+          context: context,
+          initialDate: _selectedDate,
+          firstDate: DateTime(2020),
+          lastDate: DateTime.now().add(const Duration(days: 1)),
+        );
+        if (picked != null) {
+          setState(() => _selectedDate = picked);
+        }
+      },
+      child: InputDecorator(
+        decoration: const InputDecoration(
+          labelText: 'Date',
+          prefixIcon: Icon(Icons.calendar_today, color: AppTheme.gold),
+        ),
+        child: Text(DateFormat('dd/MM/yyyy').format(_selectedDate)),
+      ),
+    );
+
+    Widget villeField = const InputDecorator(
+      decoration: InputDecoration(
+        labelText: 'Ville',
+        prefixIcon: Icon(Icons.location_on_outlined, color: AppTheme.gold),
+      ),
+      child: Text('Boujaad', style: TextStyle(color: AppTheme.textMedium)),
+    );
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(bottom: BorderSide(color: AppTheme.lightGrey)),
       ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: ClientTypeahead(
-                  controller: _clientCtrl,
-                  clients: loansP.allClients,
-                  labelText: 'Nom du client / اسم الزبون',
-                  onClientSelected: (c) {
-                    _clientCtrl.text = c.fullName;
-                    _phoneCtrl.text = c.phone;
-                    billsP.setDraftClientName(c.fullName);
-                  },
+      child: isMobile
+          ? Column(
+              children: [
+                clientField,
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(child: phoneField),
+                    const SizedBox(width: 12),
+                    Expanded(child: dateField),
+                  ],
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                flex: 2,
-                child: TextField(
-                  controller: _phoneCtrl,
-                  keyboardType: TextInputType.phone,
-                  decoration: const InputDecoration(
-                    labelText: 'Téléphone (interne)',
-                    prefixIcon: Icon(Icons.phone, color: AppTheme.gold),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                flex: 2,
-                child: InkWell(
-                  onTap: () async {
-                    final picked = await showDatePicker(
-                      context: context,
-                      initialDate: _selectedDate,
-                      firstDate: DateTime(2020),
-                      lastDate: DateTime.now().add(const Duration(days: 1)),
-                    );
-                    if (picked != null) {
-                      setState(() => _selectedDate = picked);
-                    }
-                  },
-                  child: InputDecorator(
-                    decoration: const InputDecoration(
-                      labelText: 'Date',
-                      prefixIcon: Icon(Icons.calendar_today, color: AppTheme.gold),
-                    ),
-                    child: Text(
-                        DateFormat('dd/MM/yyyy').format(_selectedDate)),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                flex: 2,
-                child: InputDecorator(
-                  decoration: const InputDecoration(
-                    labelText: 'Ville',
-                    prefixIcon: Icon(Icons.location_on_outlined, color: AppTheme.gold),
-                  ),
-                  child:
-                      const Text('Boujaad', style: TextStyle(color: AppTheme.textMedium)),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(flex: 3, child: clientField),
+                const SizedBox(width: 12),
+                Expanded(flex: 2, child: phoneField),
+                const SizedBox(width: 12),
+                Expanded(flex: 2, child: dateField),
+                const SizedBox(width: 12),
+                Expanded(flex: 2, child: villeField),
+              ],
+            ),
     );
   }
 
@@ -185,26 +191,28 @@ class _CreateBillScreenState extends State<CreateBillScreen> {
           ],
         ),
         const SizedBox(height: 8),
-        // Column headers
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          decoration: BoxDecoration(
-            color: AppTheme.darkGreen,
-            borderRadius: BorderRadius.circular(8),
+        // Column headers for DESKTOP ONLY
+        if (MediaQuery.of(context).size.width >= 600) ...[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppTheme.darkGreen,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: const [
+                _ColHeader('العدد', flex: 1),
+                _ColHeader('نوع المجوهرات', flex: 3),
+                _ColHeader('العيار', flex: 1),
+                _ColHeader('الميزان (g)', flex: 2),
+                _ColHeader('السعر/g', flex: 2),
+                _ColHeader('الثمن', flex: 2),
+                SizedBox(width: 32),
+              ],
+            ),
           ),
-          child: Row(
-            children: const [
-              _ColHeader('العدد', flex: 1),
-              _ColHeader('نوع المجوهرات', flex: 3),
-              _ColHeader('العيار', flex: 1),
-              _ColHeader('الميزان (g)', flex: 2),
-              _ColHeader('السعر/g', flex: 2),
-              _ColHeader('الثمن', flex: 2),
-              SizedBox(width: 32),
-            ],
-          ),
-        ),
-        const SizedBox(height: 4),
+          const SizedBox(height: 4),
+        ],
         ...billsP.draftItems.asMap().entries.map(
           (entry) => _BillItemRow(
             key: ValueKey('${billsP.draftId}-item-${entry.key}'),
@@ -471,165 +479,171 @@ class _BillItemRowState extends State<_BillItemRow> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMobile = MediaQuery.of(context).size.width < 600;
+
     final total = (double.tryParse(_weightCtrl.text) ?? 0.0) *
         (double.tryParse(_priceCtrl.text) ?? 0.0);
+
+    InputDecoration dec(String hint, String label) => isMobile
+        ? InputDecoration(isDense: true, labelText: label, labelStyle: const TextStyle(fontSize: 11), contentPadding: const EdgeInsets.all(8))
+        : InputDecoration(isDense: true, border: InputBorder.none, hintText: hint);
+
+    Widget qtyField = TextField(
+      controller: _qtyCtrl,
+      keyboardType: TextInputType.number,
+      textAlign: isMobile ? TextAlign.left : TextAlign.center,
+      decoration: dec('1', 'Qté / العدد'),
+      style: const TextStyle(fontSize: 13),
+      onChanged: (_) => _notify(),
+    );
+
+    Widget typeField = TypeAheadFormField<JewelryTypeModel>(
+      textFieldConfiguration: TextFieldConfiguration(
+        controller: _typeCtrl,
+        decoration: dec('Type de bijou…', 'Article / نوع المجوهرات'),
+        style: const TextStyle(fontSize: 13),
+        onChanged: (_) => _notify(),
+      ),
+      suggestionsCallback: (pattern) {
+        if (pattern.isEmpty) return widget.jewelryTypes.take(8).toList();
+        final q = pattern.toLowerCase();
+        return widget.jewelryTypes
+            .where((jt) => jt.name.toLowerCase().contains(q) || jt.nameAr.contains(pattern))
+            .take(6)
+            .toList();
+      },
+      itemBuilder: (ctx, jt) => ListTile(
+        dense: true,
+        title: Text('${jt.name} — ${jt.nameAr}', style: const TextStyle(fontSize: 13)),
+        subtitle: Text('${jt.defaultWeight}g', style: const TextStyle(fontSize: 11)),
+      ),
+      onSuggestionSelected: (jt) {
+        _typeCtrl.text = '${jt.name} - ${jt.nameAr}';
+        if (_weightCtrl.text.isEmpty || _weightCtrl.text == '0') {
+          _weightCtrl.text = '${jt.defaultWeight}';
+        }
+        if (_karatCtrl.text.isEmpty || _karatCtrl.text == '18') {
+          _karatCtrl.text = jt.defaultKarat;
+        }
+        if (_priceCtrl.text.isEmpty || _priceCtrl.text == '0') {
+          if (jt.defaultPrice > 0) {
+            final w = double.tryParse(_weightCtrl.text) ?? 0.0;
+            if (w > 0) {
+              _priceCtrl.text = (jt.defaultPrice / w).toStringAsFixed(2);
+            } else {
+              _priceCtrl.text = '${jt.defaultPrice}';
+            }
+          }
+        }
+        _notify();
+      },
+      hideOnEmpty: true,
+      suggestionsBoxDecoration: SuggestionsBoxDecoration(
+        elevation: 2,
+        borderRadius: BorderRadius.circular(8),
+      ),
+    );
+
+    Widget karatField = TextField(
+      controller: _karatCtrl,
+      textAlign: isMobile ? TextAlign.left : TextAlign.center,
+      decoration: dec('18', 'Karat / العيار'),
+      style: const TextStyle(fontSize: 13),
+      onChanged: (_) => _notify(),
+    );
+
+    Widget weightField = TextField(
+      controller: _weightCtrl,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      textAlign: isMobile ? TextAlign.left : TextAlign.center,
+      decoration: dec('0.00', 'Poids/Mizan (g)'),
+      style: const TextStyle(fontSize: 13),
+      onChanged: (_) {
+        _notify();
+        setState(() {});
+      },
+    );
+
+    Widget priceField = TextField(
+      controller: _priceCtrl,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      textAlign: isMobile ? TextAlign.left : TextAlign.center,
+      decoration: dec('0.00', 'Prix/g (MAD)'),
+      style: const TextStyle(fontSize: 13),
+      onChanged: (_) {
+        _notify();
+        setState(() {});
+      },
+    );
+
+    Widget totalText = Text(
+      total.toStringAsFixed(2),
+      textAlign: isMobile ? TextAlign.right : TextAlign.center,
+      style: const TextStyle(fontWeight: FontWeight.w800, color: AppTheme.darkGreen, fontSize: 14),
+    );
+
+    Widget deleteBtn = widget.onDelete != null
+        ? IconButton(
+            icon: const Icon(Icons.delete_outline, color: AppTheme.error),
+            onPressed: widget.onDelete,
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+          )
+        : const SizedBox.shrink();
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: isMobile ? const EdgeInsets.all(12) : const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       decoration: BoxDecoration(
         color: widget.index.isEven ? AppTheme.offWhite : Colors.white,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(isMobile ? 12 : 6),
         border: Border.all(color: AppTheme.lightGrey),
+        boxShadow: isMobile ? [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 4)] : null,
       ),
-      child: Row(
-        children: [
-          // Qty
-          Expanded(
-            flex: 1,
-            child: TextField(
-              controller: _qtyCtrl,
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              decoration: const InputDecoration(
-                isDense: true, border: InputBorder.none, hintText: '1',
-              ),
-              style: const TextStyle(fontSize: 13),
-              onChanged: (_) => _notify(),
-            ),
-          ),
-          // Jewelry type typeahead (v4 API)
-          Expanded(
-            flex: 3,
-            child: TypeAheadFormField<JewelryTypeModel>(
-              textFieldConfiguration: TextFieldConfiguration(
-                controller: _typeCtrl,
-                decoration: const InputDecoration(
-                  isDense: true,
-                  border: InputBorder.none,
-                  hintText: 'Type de bijou…',
+      child: isMobile
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Expanded(flex: 3, child: typeField),
+                    const SizedBox(width: 12),
+                    Expanded(flex: 1, child: qtyField),
+                  ],
                 ),
-                style: const TextStyle(fontSize: 13),
-                onChanged: (_) => _notify(),
-              ),
-              suggestionsCallback: (pattern) {
-                if (pattern.isEmpty) return widget.jewelryTypes.take(8).toList();
-                final q = pattern.toLowerCase();
-                return widget.jewelryTypes
-                    .where((jt) =>
-                        jt.name.toLowerCase().contains(q) ||
-                        jt.nameAr.contains(pattern))
-                    .take(6)
-                    .toList();
-              },
-              itemBuilder: (ctx, jt) => ListTile(
-                dense: true,
-                title: Text('${jt.name} — ${jt.nameAr}',
-                    style: const TextStyle(fontSize: 13)),
-                subtitle: Text('${jt.defaultWeight}g',
-                    style: const TextStyle(fontSize: 11)),
-              ),
-              onSuggestionSelected: (jt) {
-                _typeCtrl.text = '${jt.name} - ${jt.nameAr}';
-                if (_weightCtrl.text.isEmpty || _weightCtrl.text == '0') {
-                  _weightCtrl.text = '${jt.defaultWeight}';
-                }
-                if (_karatCtrl.text.isEmpty || _karatCtrl.text == '18') {
-                  _karatCtrl.text = jt.defaultKarat;
-                }
-                if (_priceCtrl.text.isEmpty || _priceCtrl.text == '0') {
-                  if (jt.defaultPrice > 0) {
-                    final w = double.tryParse(_weightCtrl.text) ?? 0.0;
-                    if (w > 0) {
-                      _priceCtrl.text = (jt.defaultPrice / w).toStringAsFixed(2);
-                    } else {
-                      _priceCtrl.text = '${jt.defaultPrice}';
-                    }
-                  }
-                }
-                _notify();
-              },
-              hideOnEmpty: true,
-              suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                elevation: 2,
-                borderRadius: BorderRadius.circular(8),
-              ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(child: karatField),
+                    const SizedBox(width: 8),
+                    Expanded(child: weightField),
+                    const SizedBox(width: 8),
+                    Expanded(child: priceField),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Total (MAD) :', style: TextStyle(color: AppTheme.textMedium, fontWeight: FontWeight.bold, fontSize: 13)),
+                    Expanded(child: totalText),
+                    const SizedBox(width: 12),
+                    deleteBtn,
+                  ],
+                )
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(flex: 1, child: qtyField),
+                Expanded(flex: 3, child: typeField),
+                Expanded(flex: 1, child: karatField),
+                Expanded(flex: 2, child: weightField),
+                Expanded(flex: 2, child: priceField),
+                Expanded(flex: 2, child: totalText),
+                SizedBox(width: 32, child: deleteBtn),
+              ],
             ),
-          ),
-          // Karat
-          Expanded(
-            flex: 1,
-            child: TextField(
-              controller: _karatCtrl,
-              textAlign: TextAlign.center,
-              decoration: const InputDecoration(
-                isDense: true, border: InputBorder.none, hintText: '18',
-              ),
-              style: const TextStyle(fontSize: 13),
-              onChanged: (_) => _notify(),
-            ),
-          ),
-          // Weight
-          Expanded(
-            flex: 2,
-            child: TextField(
-              controller: _weightCtrl,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              textAlign: TextAlign.center,
-              decoration: const InputDecoration(
-                isDense: true, border: InputBorder.none, hintText: '0.00',
-              ),
-              style: const TextStyle(fontSize: 13),
-              onChanged: (_) {
-                _notify();
-                setState(() {});
-              },
-            ),
-          ),
-          // Price/g
-          Expanded(
-            flex: 2,
-            child: TextField(
-              controller: _priceCtrl,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              textAlign: TextAlign.center,
-              decoration: const InputDecoration(
-                isDense: true, border: InputBorder.none, hintText: '0.00',
-              ),
-              style: const TextStyle(fontSize: 13),
-              onChanged: (_) {
-                _notify();
-                setState(() {});
-              },
-            ),
-          ),
-          // Total (auto)
-          Expanded(
-            flex: 2,
-            child: Text(
-              total.toStringAsFixed(2),
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: AppTheme.darkGreen,
-                  fontSize: 13),
-            ),
-          ),
-          // Delete
-          SizedBox(
-            width: 32,
-            child: widget.onDelete != null
-                ? IconButton(
-                    icon: const Icon(Icons.remove_circle_outline,
-                        size: 18, color: AppTheme.error),
-                    onPressed: widget.onDelete,
-                    padding: EdgeInsets.zero,
-                  )
-                : const SizedBox.shrink(),
-          ),
-        ],
-      ),
     );
   }
 }

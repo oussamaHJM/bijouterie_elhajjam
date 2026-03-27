@@ -128,6 +128,9 @@ class _ReportsTabState extends State<ReportsTab> {
         }
         final totalRemainingPending = totalPendingAmount - totalPaidOnPending;
 
+        final isMobile = MediaQuery.of(context).size.width < 600;
+        final cardWidth = isMobile ? MediaQuery.of(context).size.width - 48 : 300.0;
+
         return Scaffold(
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
@@ -176,15 +179,15 @@ class _ReportsTabState extends State<ReportsTab> {
                   spacing: 16,
                   runSpacing: 16,
                   children: [
-                    SizedBox(width: 300, child: _buildMetricCard(
+                    SizedBox(width: cardWidth, child: _buildMetricCard(
                       'Ventes Comptant', totalVentesComptant, Icons.receipt, AppTheme.darkGreen,
                       onTap: () => _showBillsListDialog(context, filteredBills, 'Ventes Comptant'),
                     )),
-                    SizedBox(width: 300, child: _buildMetricCard(
+                    SizedBox(width: cardWidth, child: _buildMetricCard(
                       'Prêts Soldés', totalPretsSoldes, Icons.check_circle, Colors.teal,
                       onTap: () => _showDebtsListDialog(context, filteredSoldOutLoans, loansP, 'Prêts Soldés (Récupérés)'),
                     )),
-                    SizedBox(width: 300, child: _buildMetricCard('TOTAL VENDU', grandTotalVendu, Icons.monetization_on, AppTheme.gold, isHuge: true)),
+                    SizedBox(width: cardWidth, child: _buildMetricCard('TOTAL VENDU', grandTotalVendu, Icons.monetization_on, AppTheme.gold, isHuge: true)),
                   ],
                 ),
                 const SizedBox(height: 48),
@@ -195,11 +198,11 @@ class _ReportsTabState extends State<ReportsTab> {
                   spacing: 16,
                   runSpacing: 16,
                   children: [
-                    SizedBox(width: 300, child: _buildMetricCard(
+                    SizedBox(width: cardWidth, child: _buildMetricCard(
                       'Total Prêts en cours', totalPendingAmount, Icons.credit_card, Colors.orange.shade700,
                       onTap: () => _showDebtsListDialog(context, pendingLoans, loansP, 'Prêts en Cours'),
                     )),
-                    SizedBox(width: 300, child: _buildMetricCard(
+                    SizedBox(width: cardWidth, child: _buildMetricCard(
                       'Total Restant à Payer', totalRemainingPending, Icons.warning_amber_rounded, AppTheme.error,
                       onTap: () => _showDebtsListDialog(context, pendingLoans, loansP, 'Prêts en Cours'),
                     )),
