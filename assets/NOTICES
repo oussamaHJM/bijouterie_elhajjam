@@ -1786,6 +1786,7 @@ path_provider_foundation
 shared_preferences
 shared_preferences_android
 shared_preferences_foundation
+shared_preferences_platform_interface
 
 Copyright 2013 The Flutter Authors
 
@@ -5599,7 +5600,6 @@ path_provider_windows
 plugin_platform_interface
 pointer_interceptor
 shared_preferences_linux
-shared_preferences_platform_interface
 shared_preferences_web
 shared_preferences_windows
 xdg_directories
