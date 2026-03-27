@@ -162,7 +162,7 @@ class _ManageJewelryTypesScreenState extends State<ManageJewelryTypesScreen> {
                     Expanded(
                       flex: 1,
                       child: DropdownButtonFormField<String>(
-                        value: ['18', '21', '22', '24'].contains(selectedKarat) ? selectedKarat : '18',
+                        initialValue: ['18', '21', '22', '24'].contains(selectedKarat) ? selectedKarat : '18',
                         decoration: const InputDecoration(labelText: 'Karat'),
                         items: ['18', '21', '22', '24']
                             .map((k) => DropdownMenuItem(value: k, child: Text('${k}k')))

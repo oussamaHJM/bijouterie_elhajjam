@@ -608,7 +608,7 @@ class _BillItemRowState extends State<_BillItemRow> {
           Expanded(
             flex: 2,
             child: Text(
-              '${total.toStringAsFixed(2)}',
+              total.toStringAsFixed(2),
               textAlign: TextAlign.center,
               style: const TextStyle(
                   fontWeight: FontWeight.w700,

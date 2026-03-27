@@ -1,0 +1,58 @@
+Analyzing bijouterie_elhajjam...                                
+
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/core/theme.dart:182:29 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/core/theme.dart:223:42 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/auth/screens/login_screen.dart:96:38 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/auth/screens/login_screen.dart:152:35 • deprecated_member_use
+   info • The import of 'dart:typed_data' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/services.dart' • lib/features/bills/pdf_generator.dart:1:8 • unnecessary_import
+   info • Unnecessary use of string interpolation • lib/features/bills/pdf_generator.dart:166:23 • unnecessary_string_interpolations
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/features/bills/screens/bills_history_screen.dart:69:40 • use_build_context_synchronously
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/bills/screens/bills_history_screen.dart:126:52 • deprecated_member_use
+warning • Unused import: 'package:flutter_typeahead/flutter_typeahead.dart' • lib/features/bills/screens/create_bill_screen.dart:4:8 • unused_import
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/bills/screens/create_bill_screen.dart:272:40 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/bills/screens/create_bill_screen.dart:301:59 • deprecated_member_use
+  error • The method 'TypeAheadFormField' isn't defined for the type '_BillItemRowState' • lib/features/bills/screens/create_bill_screen.dart:503:20 • undefined_method
+  error • The method 'TextFieldConfiguration' isn't defined for the type '_BillItemRowState' • lib/features/bills/screens/create_bill_screen.dart:504:39 • undefined_method
+  error • The method 'SuggestionsBoxDecoration' isn't defined for the type '_BillItemRowState' • lib/features/bills/screens/create_bill_screen.dart:552:41 • undefined_method
+   info • Unnecessary use of string interpolation • lib/features/bills/screens/create_bill_screen.dart:611:15 • unnecessary_string_interpolations
+warning • Unused import: 'package:flutter_typeahead/flutter_typeahead.dart' • lib/features/bills/screens/edit_bill_screen.dart:4:8 • unused_import
+   info • Don't use 'BuildContext's across async gaps • lib/features/bills/screens/edit_bill_screen.dart:383:19 • use_build_context_synchronously
+  error • The method 'TypeAheadFormField' isn't defined for the type '_BillItemRowState' • lib/features/bills/screens/edit_bill_screen.dart:501:20 • undefined_method
+  error • The method 'TextFieldConfiguration' isn't defined for the type '_BillItemRowState' • lib/features/bills/screens/edit_bill_screen.dart:502:39 • undefined_method
+  error • The method 'SuggestionsBoxDecoration' isn't defined for the type '_BillItemRowState' • lib/features/bills/screens/edit_bill_screen.dart:550:41 • undefined_method
+   info • Unnecessary use of string interpolation • lib/features/bills/screens/edit_bill_screen.dart:605:15 • unnecessary_string_interpolations
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/bills/screens/manage_jewelry_types_screen.dart:62:63 • deprecated_member_use
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/features/bills/screens/manage_jewelry_types_screen.dart:165:25 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/loans/screens/client_detail_screen.dart:170:41 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/loans/screens/client_detail_screen.dart:172:60 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/loans/screens/client_detail_screen.dart:193:31 • deprecated_member_use
+warning • The declaration '_showAddDebtDialog' isn't referenced • lib/features/loans/screens/client_detail_screen.dart:408:8 • unused_element
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/loans/screens/loans_list_screen.dart:395:45 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/loans/screens/loans_list_screen.dart:397:64 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/loans/screens/loans_list_screen.dart:413:43 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/loans/screens/loans_list_screen.dart:415:62 • deprecated_member_use
+warning • The declaration '_showAddLoanDialog' isn't referenced • lib/features/loans/screens/loans_list_screen.dart:467:8 • unused_element
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/features/loans/screens/loans_list_screen.dart:581:35 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/features/loans/screens/loans_list_screen.dart:582:42 • use_build_context_synchronously
+warning • Unused import: 'package:flutter_typeahead/flutter_typeahead.dart' • lib/features/loans/widgets/client_typeahead.dart:2:8 • unused_import
+  error • The method 'TypeAheadFormField' isn't defined for the type 'ClientTypeahead' • lib/features/loans/widgets/client_typeahead.dart:27:12 • undefined_method
+  error • The method 'TextFieldConfiguration' isn't defined for the type 'ClientTypeahead' • lib/features/loans/widgets/client_typeahead.dart:28:31 • undefined_method
+  error • The method 'SuggestionsBoxDecoration' isn't defined for the type 'ClientTypeahead' • lib/features/loans/widgets/client_typeahead.dart:79:33 • undefined_method
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/reports/screens/reports_tab.dart:236:41 • deprecated_member_use
+  error • The name 'ListToCsvConverter' isn't a class • lib/services/csv_service.dart:50:18 • creation_with_non_type
+  error • The name 'ListToCsvConverter' isn't a class • lib/services/csv_service.dart:65:18 • creation_with_non_type
+  error • The name 'ListToCsvConverter' isn't a class • lib/services/csv_service.dart:79:18 • creation_with_non_type
+  error • The name 'ListToCsvConverter' isn't a class • lib/services/csv_service.dart:93:18 • creation_with_non_type
+  error • The name 'ListToCsvConverter' isn't a class • lib/services/csv_service.dart:113:18 • creation_with_non_type
+  error • The name 'CsvToListConverter' isn't a class • lib/services/csv_service.dart:120:24 • creation_with_non_type
+  error • The name 'CsvToListConverter' isn't a class • lib/services/csv_service.dart:134:24 • creation_with_non_type
+  error • The name 'CsvToListConverter' isn't a class • lib/services/csv_service.dart:149:24 • creation_with_non_type
+  error • The name 'CsvToListConverter' isn't a class • lib/services/csv_service.dart:163:28 • creation_with_non_type
+  error • The name 'CsvToListConverter' isn't a class • lib/services/csv_service.dart:164:28 • creation_with_non_type
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/shell/main_shell.dart:162:31 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/shell/main_shell.dart:166:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/shell/widgets/gold_price_banner.dart:72:41 • deprecated_member_use
+   info • Unnecessary use of string interpolation • lib/shell/widgets/gold_price_banner.dart:83:16 • unnecessary_string_interpolations
+   info • Unnecessary use of string interpolation • lib/shell/widgets/gold_price_banner.dart:86:16 • unnecessary_string_interpolations
+   info • Unnecessary use of string interpolation • lib/shell/widgets/gold_price_banner.dart:89:16 • unnecessary_string_interpolations
+

@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -163,7 +162,7 @@ class BillPdfGenerator {
                 color: isEven ? lightGoldBg : PdfColors.white,
               ),
               children: [
-                _cell('${item.total.toStringAsFixed(2)}', gold: true),
+                _cell(item.total.toStringAsFixed(2), gold: true),
                 _cell('${item.weight} g', gold: false),
                 _cell(item.karat, gold: false),
                 _cell(item.jewelryType, align: pw.TextAlign.right, gold: false),
