@@ -61,7 +61,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestion des Dettes — إدارة الديون'),
+        title: const FittedBox(fit: BoxFit.scaleDown, child: Text('Gestion des Dettes — إدارة الديون')),
         actions: [
           _syncButton(),
           _csvButton(),

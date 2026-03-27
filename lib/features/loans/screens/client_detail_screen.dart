@@ -32,7 +32,7 @@ class ClientDetailScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(client.fullName),
+            title: FittedBox(fit: BoxFit.scaleDown, child: Text(client.fullName)),
             actions: [
               IconButton(
                 icon: const Icon(Icons.edit),

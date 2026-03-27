@@ -27,7 +27,7 @@ class _ClientsListScreenState extends State<ClientsListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gestion des Clients — إدارة الزبائن'),
+        title: const FittedBox(fit: BoxFit.scaleDown, child: Text('Gestion des Clients — إدارة الزبائن')),
       ),
       body: Column(
         children: [

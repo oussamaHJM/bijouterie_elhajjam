@@ -219,6 +219,7 @@ class _ReportsTabState extends State<ReportsTab> {
             ),
           ),
           floatingActionButton: FloatingActionButton.extended(
+            heroTag: null,
             onPressed: () {
               Navigator.push(
                 context,

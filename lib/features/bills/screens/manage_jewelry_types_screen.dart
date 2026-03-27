@@ -18,7 +18,7 @@ class _ManageJewelryTypesScreenState extends State<ManageJewelryTypesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Stock / Articles — السلع', style: TextStyle(color: AppTheme.gold)),
+        title: const FittedBox(fit: BoxFit.scaleDown, child: Text('Stock / Articles — السلع', style: TextStyle(color: AppTheme.gold))),
         iconTheme: const IconThemeData(color: AppTheme.gold),
         backgroundColor: AppTheme.darkGreen,
       ),
@@ -91,6 +91,7 @@ class _ManageJewelryTypesScreenState extends State<ManageJewelryTypesScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: null,
         onPressed: () => _showEditDialog(context, context.read<BillsProvider>()),
         icon: const Icon(Icons.add),
         label: const Text('Nouvel Article'),

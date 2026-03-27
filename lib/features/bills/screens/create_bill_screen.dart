@@ -51,7 +51,7 @@ class _CreateBillScreenState extends State<CreateBillScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nouvelle Facture — فاتورة جديدة'),
+        title: const FittedBox(fit: BoxFit.scaleDown, child: Text('Nouvelle Facture — فاتورة جديدة')),
         actions: [
           IconButton(
             icon: const Icon(Icons.history),

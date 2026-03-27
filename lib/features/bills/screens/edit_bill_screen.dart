@@ -81,7 +81,7 @@ class _EditBillScreenState extends State<EditBillScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Facture N° ${widget.initialBill.id.substring(0,8).toUpperCase()}'),
+        title: FittedBox(fit: BoxFit.scaleDown, child: Text('Facture N° ${widget.initialBill.id.substring(0,8).toUpperCase()}')),
         actions: [
           if (!_isEditing)
             IconButton(

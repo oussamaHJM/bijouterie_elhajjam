@@ -51,7 +51,7 @@ class _BillsHistoryScreenState extends State<BillsHistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Factures — الفواتير'),
+        title: const FittedBox(fit: BoxFit.scaleDown, child: Text('Factures — الفواتير')),
         actions: [
           Consumer<BillsProvider>(
             builder: (ctx, p, _) => IconButton(
@@ -81,6 +81,7 @@ class _BillsHistoryScreenState extends State<BillsHistoryScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: null,
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (_) => const CreateBillScreen()));
         },
