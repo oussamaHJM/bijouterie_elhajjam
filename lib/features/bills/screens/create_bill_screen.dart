@@ -7,6 +7,7 @@ import '../models/bill_model.dart';
 import '../models/jewelry_type_model.dart';
 import '../../loans/loans_provider.dart';
 import '../../loans/widgets/client_typeahead.dart';
+import '../../loans/screens/client_detail_screen.dart';
 import '../../../core/theme.dart';
 import '../../../core/constants.dart';
 import '../pdf_generator.dart';
@@ -369,6 +370,13 @@ class _CreateBillScreenState extends State<CreateBillScreen> {
         const SnackBar(content: Text('Nouveau Prêt enregistré avec succès ✅')),
       );
       billsP.resetDraft(); // explicit clearance of form data
+
+      // Redirect to the client's detail page to see their new credit
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => ClientDetailScreen(client: client)),
+      );
+      return; // Stop here, no need to clear/reset the form as we navigated away
     } else {
       // Core Bill sequence
       final bill = await billsP.saveBill();
@@ -389,6 +397,9 @@ class _CreateBillScreenState extends State<CreateBillScreen> {
     _clientCtrl.clear();
     _phoneCtrl.clear();
     _avanceCtrl.text = '0';
+    
+    // For normal bills, just pop back
+    if (mounted) Navigator.pop(context);
   }
 }
 

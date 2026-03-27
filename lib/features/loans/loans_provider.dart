@@ -58,15 +58,25 @@ class LoansProvider extends ChangeNotifier {
   double totalPaidForClient(String clientId) =>
       _payments.where((p) => p.clientId == clientId).fold(0.0, (s, p) => s + p.amount);
 
-  double remainingForClient(String clientId) =>
-      totalDebtForClient(clientId) - totalPaidForClient(clientId);
+  double remainingForClient(String clientId) {
+    return debtsForClient(clientId).fold(0.0, (s, d) => s + remainingForDebt(d.id));
+  }
 
   double totalPaidForDebt(String debtId) =>
       _payments.where((p) => p.debtId == debtId).fold(0.0, (s, p) => s + p.amount);
 
   double remainingForDebt(String debtId) {
     final debt = _debts.firstWhere((d) => d.id == debtId, orElse: () => DebtModel(id: '', clientId: '', amount: 0));
-    return debt.amount - totalPaidForDebt(debtId);
+    if (debt.id.isEmpty) return 0.0;
+    if (debt.settled) return 0.0;
+    final remaining = debt.amount - totalPaidForDebt(debtId);
+    return remaining > 0 ? remaining : 0.0;
+  }
+
+  bool isClientSolde(String clientId) {
+    final clientDebts = debtsForClient(clientId);
+    if (clientDebts.isEmpty) return false;
+    return clientDebts.every((d) => d.settled || remainingForDebt(d.id) <= 0);
   }
 
   // ─── Initialization ────────────────────────────────────────────────────────

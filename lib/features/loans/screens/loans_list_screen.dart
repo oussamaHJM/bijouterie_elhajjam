@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import '../../bills/screens/create_bill_screen.dart';
 import '../loans_provider.dart';
 import '../models/client_model.dart';
-import '../widgets/client_typeahead.dart';
 import '../../bills/bills_provider.dart';
 import '../../../core/theme.dart';
 import '../../../services/csv_service.dart';
@@ -328,7 +327,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
     final totalDebt = p.totalDebtForClient(client.id);
     final totalPaid = p.totalPaidForClient(client.id);
     final remaining = p.remainingForClient(client.id);
-    final isSolde = remaining <= 0 && totalDebt > 0;
+    final isSolde = p.isClientSolde(client.id);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
@@ -464,137 +463,8 @@ class _LoansListScreenState extends State<LoansListScreen> {
   // Dialogs
   // ─────────────────────────────────────────────────────────────────────────────
 
-  void _showAddLoanDialog(BuildContext context) {
-    final clientCtrl = TextEditingController();
-    final amountCtrl = TextEditingController();
-    final notesCtrl = TextEditingController();
-    DateTime selectedDate = DateTime.now();
-    ClientModel? selectedClient;
-    final formKey = GlobalKey<FormState>();
+  // Add loan dialog removed as functionality is unified in CreateBillScreen.
 
-    showDialog(
-      context: context,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setDialogState) {
-          final p = context.read<LoansProvider>();
-          return AlertDialog(
-            title: const Text('Nouveau Prêt'),
-            content: SizedBox(
-              width: 400,
-              child: Form(
-                key: formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ClientTypeahead(
-                      controller: clientCtrl,
-                      clients: p.allClients,
-                      showPhone: true,
-                      onClientSelected: (c) {
-                        selectedClient = c;
-                        clientCtrl.text = c.fullName;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: amountCtrl,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Montant (MAD)',
-                        prefixIcon: Icon(Icons.attach_money, color: AppTheme.gold),
-                        suffixText: 'MAD',
-                      ),
-                      validator: (v) =>
-                          (v == null || double.tryParse(v) == null || double.parse(v) <= 0)
-                              ? 'Montant invalide'
-                              : null,
-                    ),
-                    const SizedBox(height: 16),
-                    InkWell(
-                      onTap: () async {
-                        final picked = await showDatePicker(
-                          context: ctx,
-                          initialDate: selectedDate,
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime.now().add(const Duration(days: 1)),
-                        );
-                        if (picked != null) {
-                          setDialogState(() => selectedDate = picked);
-                        }
-                      },
-                      child: InputDecorator(
-                        decoration: const InputDecoration(
-                          labelText: 'Date',
-                          prefixIcon: Icon(Icons.calendar_today, color: AppTheme.gold),
-                        ),
-                        child: Text(
-                          DateFormat('dd/MM/yyyy').format(selectedDate),
-                          style: const TextStyle(fontSize: 15),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: notesCtrl,
-                      decoration: const InputDecoration(
-                        labelText: 'Notes (optionnel)',
-                        prefixIcon: Icon(Icons.notes, color: AppTheme.gold),
-                      ),
-                      maxLines: 2,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(ctx),
-                child: const Text('Annuler'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  if (!formKey.currentState!.validate()) return;
-                  final p = context.read<LoansProvider>();
-
-                  // Parse client
-                  final parts = clientCtrl.text.trim().split(' ');
-                  final firstName = parts.isNotEmpty ? parts.first : 'Client';
-                  final lastName =
-                      parts.length > 1 ? parts.sublist(1).join(' ') : '';
-
-                  final client = selectedClient ??
-                      await p.findOrCreateClient(
-                        firstName: firstName,
-                        lastName: lastName,
-                      );
-
-                  await p.addDebt(
-                    clientId: client.id,
-                    amount: double.parse(amountCtrl.text),
-                    date: selectedDate,
-                    notes: notesCtrl.text.trim().isEmpty
-                        ? null
-                        : notesCtrl.text.trim(),
-                  );
-
-                  if (mounted) {
-                    Navigator.pop(ctx);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                            'Prêt ajouté pour ${client.fullName} ✅'),
-                      ),
-                    );
-                  }
-                },
-                child: const Text('Enregistrer'),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
 
   Future<void> _exportCsv() async {
     try {

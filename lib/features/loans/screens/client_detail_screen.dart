@@ -28,7 +28,7 @@ class ClientDetailScreen extends StatelessWidget {
         final totalDebt = p.totalDebtForClient(client.id);
         final totalPaid = p.totalPaidForClient(client.id);
         final remaining = p.remainingForClient(client.id);
-        final isSolde = remaining <= 0 && totalDebt > 0;
+        final isSolde = p.isClientSolde(client.id);
 
         return Scaffold(
           appBar: AppBar(
@@ -401,83 +401,6 @@ class ClientDetailScreen extends StatelessWidget {
                   },
           ),
         ],
-      ),
-    );
-  }
-
-  void _showAddDebtDialog(BuildContext context, LoansProvider p) {
-    final amountCtrl = TextEditingController();
-    final notesCtrl = TextEditingController();
-    DateTime selectedDate = DateTime.now();
-    final formKey = GlobalKey<FormState>();
-
-    showDialog(
-      context: context,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setState) => AlertDialog(
-          title: const Text('Nouveau Prêt'),
-          content: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: amountCtrl,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Montant (MAD)',
-                    prefixIcon: Icon(Icons.attach_money, color: AppTheme.gold),
-                    suffixText: 'MAD',
-                  ),
-                  validator: (v) => (v == null || double.tryParse(v) == null)
-                      ? 'Montant invalide'
-                      : null,
-                ),
-                const SizedBox(height: 12),
-                InkWell(
-                  onTap: () async {
-                    final picked = await showDatePicker(
-                      context: ctx,
-                      initialDate: selectedDate,
-                      firstDate: DateTime(2020),
-                      lastDate: DateTime.now().add(const Duration(days: 1)),
-                    );
-                    if (picked != null) setState(() => selectedDate = picked);
-                  },
-                  child: InputDecorator(
-                    decoration: const InputDecoration(labelText: 'Date'),
-                    child: Text(DateFormat('dd/MM/yyyy').format(selectedDate)),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                TextFormField(
-                  controller: notesCtrl,
-                  decoration: const InputDecoration(labelText: 'Notes'),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-                onPressed: () => Navigator.pop(ctx),
-                child: const Text('Annuler')),
-            ElevatedButton(
-              onPressed: () async {
-                if (!formKey.currentState!.validate()) return;
-                await p.addDebt(
-                  clientId: client.id,
-                  amount: double.parse(amountCtrl.text),
-                  date: selectedDate,
-                  notes: notesCtrl.text.trim().isEmpty
-                      ? null
-                      : notesCtrl.text.trim(),
-                );
-                if (ctx.mounted) Navigator.pop(ctx);
-              },
-              child: const Text('Enregistrer'),
-            ),
-          ],
-        ),
       ),
     );
   }
