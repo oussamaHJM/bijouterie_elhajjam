@@ -1,11 +1,11 @@
 {
-    "name": "bijouterie_elhajjam",
-    "short_name": "bijouterie_elhajjam",
+    "name": "Bijouterie El Hajjam",
+    "short_name": "El Hajjam",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#0a261a",
+    "theme_color": "#cfb53b",
+    "description": "Système de gestion interne pour la Bijouterie El Hajjam.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
